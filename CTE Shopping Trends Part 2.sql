@@ -1,0 +1,23 @@
+/* Problem: Pull a list of all the shopping transactions where the purchase_amount_usd is less than the state's (location) average purchase amount. 
+Include the following columns:
+
+	Customer_ID
+	Location
+	purchase_amount_usd
+	state_avg (you have to make this one!)
+	diff_from_avg (you have to make this one!) */
+
+With state_averages AS (
+SELECT DISTINCT Location, 
+	   AVG(Purchase_Amount_USD) AS state_average
+FROM shopping_trends
+GROUP BY Location
+)
+
+SELECT	Customer_ID,
+		Location, 
+		Purchase_Amount_USD,
+		AVG(Purchase_Amount_USD) OVER (PARTITION BY Location) AS state_avg,
+		(Purchase_Amount_USD - (SELECT state_average FROM state_averages WHERE Location = shopping_trends.location)) AS diff_from_avg
+FROM shopping_trends
+WHERE Purchase_Amount_USD < (SELECT state_average FROM state_averages WHERE Location = shopping_trends.location)
