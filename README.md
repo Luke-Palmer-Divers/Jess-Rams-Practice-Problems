@@ -1,2 +1,4 @@
 # Practice-Problems-from-Jess-Ramos
-SQL Practice Problems from Jess Ramos @ BDE
+In this repository you can find all the practice problems I have completed from Jess Ramos' email newsletter.
+
+You can follow her on Linkedin [Here](https://www.linkedin.com/in/jessramosmsba/)
