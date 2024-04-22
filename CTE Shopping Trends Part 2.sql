@@ -22,4 +22,4 @@ SELECT	st.Customer_ID,
 FROM shopping_trends AS st
 JOIN state_averages AS sa
 	ON st.location = sa.location
-
+WHERE st.Purchase_Amount_USD < sa.state_average
