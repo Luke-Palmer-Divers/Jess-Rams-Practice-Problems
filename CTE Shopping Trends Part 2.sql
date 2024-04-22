@@ -8,16 +8,18 @@ Include the following columns:
 	diff_from_avg (you have to make this one!) */
 
 With state_averages AS (
-SELECT DISTINCT Location, 
+SELECT DISTINCT Location AS location, 
 	   AVG(Purchase_Amount_USD) AS state_average
 FROM shopping_trends
 GROUP BY Location
 )
 
-SELECT	Customer_ID,
-		Location, 
-		Purchase_Amount_USD,
-		AVG(Purchase_Amount_USD) OVER (PARTITION BY Location) AS state_avg,
-		(Purchase_Amount_USD - (SELECT state_average FROM state_averages WHERE Location = shopping_trends.location)) AS diff_from_avg
-FROM shopping_trends
-WHERE Purchase_Amount_USD < (SELECT state_average FROM state_averages WHERE Location = shopping_trends.location)
+SELECT	st.Customer_ID,
+		sa.Location, 
+		st.Purchase_Amount_USD,
+		sa.state_average,
+		st.Purchase_Amount_USD - sa.state_average AS diff_from_avg
+FROM shopping_trends AS st
+JOIN state_averages AS sa
+	ON st.location = sa.location
+
